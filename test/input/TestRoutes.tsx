@@ -8,18 +8,19 @@ const TestRoutes = () => {
         <Routes>
             <Route element={element} index />
             <Route element={element} path="/test-surface-path-element" />
-            <Route path="/test-surface-path-children">{element}</Route>
+            <Route path="/test-surface-path-children"></Route>
 
             <Route path="/test-nested-path">
                 <Route element={element} index />
                 <Route element={element} path="/nested-path-element" />
-                <Route path="/nested-path-children">{element}</Route>
+                <Route path="/nested-path-children"></Route>
             </Route>
         </Routes>
     );
 };
 
-export const expectedRoutes = [
+export const baseUrl = "https://127.0.0.1";
+export const expectedEndpoints = [
     "/",
     "/test-surface-path-element",
     "/test-surface-path-children",
@@ -27,5 +28,7 @@ export const expectedRoutes = [
     "/test-nested-path/nested-path-element",
     "/test-nested-path/nested-path-children"
 ];
+export const expectedRoutes = expectedEndpoints.map((endpoint) => `${baseUrl}${endpoint}`);
+export const expectedRoutesWithHash = expectedEndpoints.map((endpoint) => `${baseUrl}/#${endpoint}`);
 export const expectedRouteAmount = 6;
 export default TestRoutes;
