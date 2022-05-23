@@ -5,12 +5,14 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "dist",
-    "declaration": true,
     "target": "ESNext",
     "module": "commonjs",
+    "jsx": "react",
+    "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "strictNullChecks": false,
     "skipLibCheck": true
   }
 }

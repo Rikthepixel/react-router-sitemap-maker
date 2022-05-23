@@ -1,38 +1,25 @@
-type ChangeFrequency = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+import type { ReactElement } from "react";
+import ParseRoutes from './ParseRoutes';
+import SitemapData, { Options } from './SitemapData';
 
-interface Options {
-    lastModification?: Date;
-    changeFrequency?: ChangeFrequency;
-    priority?: number;
-    hashrouting?: boolean;
-    includePaths: Array<string>;
-    excludeExtentions: Array<string>;
-}
+const GenerateSitemap = (routes: ReactElement, options: Options): SitemapData => {
 
-class SitemapData {
-    private Routes: Array<URL>;
-    private Options: Options;
+    options.lastModification = options.lastModification ?? new Date().toISOString().slice(0, 10);
+    options.changeFrequency = options.changeFrequency ?? "monthly";
+    options.outputType = options.outputType ?? "xml";
+    options.priority = options.priority ?? 0.5;
+    options.priority = Math.max(Math.min(options.priority, 1), 0);
 
-    constructor(routes: Array<URL>, options: Options) {
-        this.Routes = routes;
-        this.Options = options;
-    }
+    return new SitemapData(
+        ParseRoutes(routes),
+        options
+    );
+};
 
-    toXMLString = async (): Promise<string> => {
-        return "";
-    };
-
-    toTextString = async (): Promise<string> => {
-        return "";
-    };
-
-    toFile = async (): Promise<boolean> => {
-        return false;
-    };
-}
-
-const GenerateSitemap = (options: Options): SitemapData => {
-    return new SitemapData([], options);
+export {
+    ParseRoutes,
+    GenerateSitemap,
+    SitemapData
 };
 
 export default GenerateSitemap;
