@@ -1,0 +1,16 @@
+{
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "dist",
+    "declaration": true,
+    "target": "ESNext",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
