@@ -12,13 +12,22 @@ export interface Options {
 }
 
 class SitemapData {
+    private Endpoints: Array<string>;
     private Routes: Array<string>;
     private Options: Options;
 
-    constructor(routes: Array<string>, options: Options) {
-        this.Routes = routes;
+    constructor(endpoints: Array<string>, options: Options) {
+        this.Endpoints = endpoints;
+        this.Routes = endpoints.map((endpoint) => `${options.baseUrl}${options.hashrouting ? "/#" : ""}${endpoint}`);
         this.Options = options;
     }
+
+    getRoutes = (): Array<string> => this.Routes;
+    getEndpoints = (): Array<string> => this.Endpoints;
+
+    toJSONString = async (): Promise<string> => {
+        return JSON.stringify(this.Routes);
+    };
 
     toXMLString = async (): Promise<string> => {
         return "";
