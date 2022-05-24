@@ -1,10 +1,13 @@
-import fs from 'fs';
+import { existsSync, readFileSync } from 'fs';
+import { open as openFile, unlink } from 'fs/promises';
 import { expect } from 'chai';
 import { SitemapData } from '../src';
-import { baseUrl, expectedEndpoints, expectedRouteAmount, expectedRoutes, expectedRoutesWithHash } from "./input/TestRoutes";
+import { baseUrl, expectedEndpoints, expectedRoutes, expectedRoutesWithHash } from "./input/TestRoutes";
 
-const expectedXML = fs.readFileSync("./test/reference/sitemap.xml").toString();
-const expectedTXT = fs.readFileSync("./test/reference/sitemap.txt").toString();
+const outputDir = "./test/output";
+const expectedXML = readFileSync("./test/reference/sitemap.xml").toString();
+const expectedTXT = readFileSync("./test/reference/sitemap.txt").toString();
+const expectedJSON = readFileSync("./test/reference/sitemap.json").toString();
 
 describe('SitemapData', () => {
 
@@ -47,6 +50,16 @@ describe('SitemapData', () => {
         expect(actual).to.have.all.members(expectedRoutesWithHash);
     });
 
+    it("Creates a JSON string according to the reference", async () => {
+        const data = new SitemapData(
+            expectedEndpoints,
+            { baseUrl: baseUrl }
+        );
+
+        const actual = await data.toJSONString();
+
+        expect(actual).to.be.equal(expectedJSON);
+    });
 
     it("Creates an xml string according to the reference", async () => {
         const data = new SitemapData(
@@ -76,15 +89,34 @@ describe('SitemapData', () => {
             { baseUrl: baseUrl }
         );
 
-        const saveLocation = "./test/sitemap.xml";
+        const saveLocation = `${outputDir}/sitemapTest-CreatesFile.xml`;
 
         const actual = await data.toFile(saveLocation);
 
         expect(actual).to.be.true;
 
-        const createdFileExists = fs.existsSync(saveLocation);
+        const createdFileExists = existsSync(saveLocation);
         expect(createdFileExists).to.be.true;
 
-        fs.unlinkSync(saveLocation);
+        await unlink(saveLocation);
     });
-});
+
+    it("Overwrites existing sitemap if it already exists", async () => {
+        const endpoints = [1, 2].map(() => `/${Math.floor(Math.random() * 10000)}`);
+        const expectedContents = `${baseUrl}${endpoints[0]}\r\n${baseUrl}${endpoints[1]}`;
+        const data = new SitemapData(
+            endpoints,
+            { baseUrl: baseUrl, outputType: "txt" }
+        );
+
+        const saveLocation = `${outputDir}/sitemapTest-OverwriteFile.xml`;
+
+        const saved = await data.toFile(saveLocation);
+        expect(saved).to.be.true;
+
+        const file = await openFile(saveLocation, "r");
+        const actual = (await file.readFile()).toString();
+
+        expect(actual).to.be.equal(expectedContents);
+    });
+});;
