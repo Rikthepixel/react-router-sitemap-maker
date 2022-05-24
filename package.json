@@ -1,6 +1,6 @@
 {
   "name": "react-router-sitemap-maker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generates a sitemap from react-router-dom routes",
   "author": "RikThePixel",
   "license": "MIT",
