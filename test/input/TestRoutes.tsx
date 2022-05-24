@@ -7,6 +7,7 @@ const TestRoutes = () => {
     return (
         <Routes>
             <Route element={element} index />
+            <Route path="*" element={element} />
             <Route element={element} path="/test-surface-path-element" />
             <Route path="/test-surface-path-children"></Route>
 
@@ -30,5 +31,6 @@ export const expectedEndpoints = [
 ];
 export const expectedRoutes = expectedEndpoints.map((endpoint) => `${baseUrl}${endpoint}`);
 export const expectedRoutesWithHash = expectedEndpoints.map((endpoint) => `${baseUrl}/#${endpoint}`);
+expectedRoutesWithHash.unshift(`${baseUrl}/`)
 export const expectedRouteAmount = 6;
 export default TestRoutes;

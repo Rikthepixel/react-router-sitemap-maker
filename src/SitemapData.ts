@@ -52,7 +52,7 @@ class SitemapData {
         this.Routes = endpoints.map((endpoint) => `${options.baseUrl}${options.hashrouting ? "/#" : ""}${endpoint}`);
         this.Options = options;
 
-        if (options.hashrouting) this.Routes.push(`${options.baseUrl}/`);
+        if (options.hashrouting) this.Routes.unshift(`${options.baseUrl}/`);
     }
 
     getRoutes = (): Array<string> => this.Routes;
