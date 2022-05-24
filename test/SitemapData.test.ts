@@ -4,10 +4,10 @@ import { expect } from 'chai';
 import { SitemapData } from '../src';
 import { baseUrl, expectedEndpoints, expectedRoutes, expectedRoutesWithHash } from "./input/TestRoutes";
 
-const outputDir = "./test/output";
-const expectedXML = readFileSync("./test/reference/sitemap.xml").toString();
-const expectedTXT = readFileSync("./test/reference/sitemap.txt").toString();
-const expectedJSON = readFileSync("./test/reference/sitemap.json").toString();
+const testDir = "./test";
+const expectedXML = readFileSync(`${testDir}/reference/sitemap.xml`).toString();
+const expectedTXT = readFileSync(`${testDir}/reference/sitemap.txt`).toString();
+const expectedJSON = readFileSync(`${testDir}/reference/sitemap.json`).toString();
 
 describe('SitemapData', () => {
 
@@ -64,7 +64,7 @@ describe('SitemapData', () => {
     it("Creates an xml string according to the reference", async () => {
         const data = new SitemapData(
             expectedEndpoints,
-            { baseUrl: baseUrl }
+            { baseUrl: baseUrl, priority: 0.8, lastModification: new Date(2021, 0, 2) }
         );
 
         const actual = await data.toXMLString();
@@ -89,7 +89,7 @@ describe('SitemapData', () => {
             { baseUrl: baseUrl }
         );
 
-        const saveLocation = `${outputDir}/sitemapTest-CreatesFile.xml`;
+        const saveLocation = `${testDir}/sitemapTest-CreatesFile.xml`;
 
         const actual = await data.toFile(saveLocation);
 
@@ -102,14 +102,19 @@ describe('SitemapData', () => {
     });
 
     it("Overwrites existing sitemap if it already exists", async () => {
+        const saveLocation = `${testDir}/sitemapTest-OverwriteFile.xml`;
+        {
+            const file = await openFile(saveLocation, "w");
+            await file.writeFile("sitemapContents");
+            await file.close();
+        }
+
         const endpoints = [1, 2].map(() => `/${Math.floor(Math.random() * 10000)}`);
         const expectedContents = `${baseUrl}${endpoints[0]}\r\n${baseUrl}${endpoints[1]}`;
         const data = new SitemapData(
             endpoints,
             { baseUrl: baseUrl, outputType: "txt" }
         );
-
-        const saveLocation = `${outputDir}/sitemapTest-OverwriteFile.xml`;
 
         const saved = await data.toFile(saveLocation);
         expect(saved).to.be.true;
@@ -118,5 +123,7 @@ describe('SitemapData', () => {
         const actual = (await file.readFile()).toString();
 
         expect(actual).to.be.equal(expectedContents);
+        await file.close();
+        await unlink(saveLocation);
     });
 });;
