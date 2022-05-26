@@ -2,18 +2,23 @@ name: Testing
 
 on:
   push:
-    branches: [ main, development ]
+    branches: 
+      - main
+      - development
+      - release/*
   pull_request:
-    branches: [ main, development ]
+    branches:
+      - main
+      - development
+      - release/*
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  test:
+    runs-on:  [ubuntu-latest]
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [16.x, 17.x]
         
     steps:
     - uses: actions/checkout@v3
