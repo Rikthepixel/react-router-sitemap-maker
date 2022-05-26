@@ -91,9 +91,11 @@ describe('SitemapData', () => {
 
         const saveLocation = `${testDir}/sitemapTest-CreatesFile.xml`;
 
-        const actual = await data.toFile(saveLocation);
-
-        expect(actual).to.be.true;
+        try {
+            await data.toFile(saveLocation);
+        } catch (error) {
+            expect(error).to.be.null;
+        }
 
         const createdFileExists = existsSync(saveLocation);
         expect(createdFileExists).to.be.true;
@@ -116,9 +118,12 @@ describe('SitemapData', () => {
             { baseUrl: baseUrl, outputType: "txt" }
         );
 
-        const saved = await data.toFile(saveLocation);
-        expect(saved).to.be.true;
-
+        try {
+            await data.toFile(saveLocation);
+        } catch (error) {
+            expect(error).to.be.null;
+        }
+        
         const file = await openFile(saveLocation, "r");
         const actual = (await file.readFile()).toString();
 
