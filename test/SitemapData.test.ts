@@ -9,6 +9,8 @@ const expectedXML = readFileSync(`${testDir}/reference/sitemap.xml`).toString();
 const expectedTXT = readFileSync(`${testDir}/reference/sitemap.txt`).toString();
 const expectedJSON = readFileSync(`${testDir}/reference/sitemap.json`).toString();
 
+const removeWhiteSpaces = (input: string): string => input.replace(/(\r\n|\n|\r|\s)/gm, "");
+
 describe('SitemapData', () => {
 
     it("GetEndpoints returns the correct endpoints", () => {
@@ -70,7 +72,8 @@ describe('SitemapData', () => {
 
         const actual = await data.toXMLString();
 
-        expect(actual).to.be.equal(expectedXML);
+
+        expect(removeWhiteSpaces(actual)).to.be.equal(removeWhiteSpaces(expectedXML));
     });
 
     it("Creates an text string according to the reference", async () => {
@@ -81,7 +84,7 @@ describe('SitemapData', () => {
 
         const actual = await data.toTextString();
 
-        expect(actual).to.be.equal(expectedTXT);
+        expect(removeWhiteSpaces(actual)).to.be.equal(removeWhiteSpaces(expectedTXT));
     });
 
     it("Creates a file in the assigned directory", async () => {
