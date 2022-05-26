@@ -5,6 +5,7 @@
 Generates a sitemap from react-router-dom routes.
 
 Available on NPM:
+
 [![NPM](https://nodei.co/npm/react-router-sitemap-maker.png)](https://www.npmjs.com/package/react-router-sitemap-maker)
 
 ## Usage
