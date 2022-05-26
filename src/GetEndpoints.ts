@@ -2,8 +2,6 @@ import React, { Fragment, ReactElement, ReactNode } from 'react';
 import { RoutesProps, RouteObject } from "react-router-dom";
 
 const createRoutesFromChildren = (children: ReactNode) => {
-
-
     let routes: Array<RouteObject> = [];
     React.Children.forEach(children, element => {
 
@@ -42,7 +40,12 @@ const addBaseToPath = (routes: Array<RouteObject>, paths: Array<string>, base: s
     });
 };
 
-const ParseRoutes = (routes: ReactElement): Array<string> => {
+/**
+ * Parses the routes of the input element
+ * @param routes A React element containing one or multiple Route elements 
+ * @returns {Array<string>} An array of all of the endpoints contained in the input ReactElement
+ */
+const GetEndpoints = (routes: ReactElement): Array<string> => {
     if (!React.isValidElement(routes)) return [];
     const { children }: RoutesProps = routes.props;
     const routePaths = createRoutesFromChildren(children);
@@ -62,4 +65,4 @@ const ParseRoutes = (routes: ReactElement): Array<string> => {
     return paths;
 };
 
-export default ParseRoutes;;
+export default GetEndpoints;
