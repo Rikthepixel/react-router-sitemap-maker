@@ -2,14 +2,19 @@ name: Testing
 
 on:
   push:
-    branches: [ main, development ]
+    branches: 
+      - main
+      - development
+      - release/*
   pull_request:
-    branches: [ main, development ]
+    branches:
+      - main
+      - development
+      - release/*
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  test:
+    runs-on:  [ubuntu-latest, windows-latest, macOS-latest]
 
     strategy:
       matrix:
