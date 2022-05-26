@@ -62,9 +62,10 @@ describe('SitemapData', () => {
     });
 
     it("Creates an xml string according to the reference", async () => {
+
         const data = new SitemapData(
             expectedEndpoints,
-            { baseUrl: baseUrl, priority: 0.8, lastModification: new Date(2021, 0, 2) }
+            { baseUrl: baseUrl, priority: 0.8, lastModification: new Date(1653603676486) }
         );
 
         const actual = await data.toXMLString();
@@ -123,7 +124,7 @@ describe('SitemapData', () => {
         } catch (error) {
             expect(error).to.be.null;
         }
-        
+
         const file = await openFile(saveLocation, "r");
         const actual = (await file.readFile()).toString();
 
