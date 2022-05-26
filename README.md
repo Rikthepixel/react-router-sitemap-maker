@@ -1,6 +1,11 @@
 # react-router-sitemap-maker
 
-Generates a sitemap from react-router-dom routes
+[![Testing](https://github.com/Rikthepixel/react-router-sitemap-maker/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/Rikthepixel/react-router-sitemap-maker/actions/workflows/test.yml)
+
+Generates a sitemap from react-router-dom routes.
+
+Available on NPM:
+[![NPM](https://nodei.co/npm/react-router-sitemap-maker.png)](https://www.npmjs.com/package/react-router-sitemap-maker)
 
 ## Usage
 
